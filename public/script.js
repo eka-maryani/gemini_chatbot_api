@@ -434,11 +434,55 @@ function showConfirm(title, desc) {
 
 // Misc Actions / Aksi Lain-lain
 window.copyText = (id, btn) => {
-  const txt = document.querySelector(`#${id} .msg-content`).innerText;
-  navigator.clipboard.writeText(txt).then(() => {
-    const org = btn.innerHTML; btn.innerHTML = '<span class="material-symbols-rounded" style="color:var(--accent-success)">check</span>';
-    showToast('Copied', 'success'); setTimeout(() => btn.innerHTML = org, 1500);
-  });
+  try {
+    // Retrieve the message element safely using getElementById (avoids selector issues with dots in IDs)
+    const msgEl = document.getElementById(id);
+    if (!msgEl) throw new Error('Message element not found');
+    const txt = msgEl.querySelector('.msg-content').innerText;
+
+    // Attempt modern Clipboard API first
+    navigator.clipboard.writeText(txt)
+      .then(() => {
+        const org = btn.innerHTML;
+        btn.innerHTML = '<span class="material-symbols-rounded" style="color:var(--accent-success)">check</span>';
+        showToast('Copied', 'success');
+        setTimeout(() => btn.innerHTML = org, 1500);
+      })
+      .catch(err => {
+        // Fallback for browsers without Clipboard API or when permission denied
+        console.warn('Clipboard API failed, using fallback', err);
+        fallbackCopyText(txt, btn);
+      });
+  } catch (e) {
+    console.error('Copy failed:', e);
+    showToast('Copy gagal – periksa console', 'error');
+  }
+};
+
+// Fallback copy using a temporary textarea (works in older browsers)
+function fallbackCopyText(text, btn) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) {
+      const org = btn.innerHTML;
+      btn.innerHTML = '<span class="material-symbols-rounded" style="color:var(--accent-success)">check</span>';
+      showToast('Copied (fallback)', 'success');
+      setTimeout(() => btn.innerHTML = org, 1500);
+    } else {
+      throw new Error('execCommand copy failed');
+    }
+  } catch (e) {
+    console.error('Fallback copy failed:', e);
+    showToast('Copy gagal', 'error');
+  } finally {
+    document.body.removeChild(textarea);
+  }
 }
 // ... (Logika Edit, Share mirip dengan sebelumnya, disesuaikan untuk update allSessions)
 window.shareContent = (id) => {

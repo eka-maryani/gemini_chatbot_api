@@ -14,7 +14,6 @@ Aplikasi chatbot berbasis Google Gemini AI dengan antarmuka yang elegan, feminin
 - **Tema Blush & Bloom**: Desain feminine dengan warna pastel pink dan efek glassmorphism
 - **Animasi Smooth**: Transisi halus dan micro-animations yang memanjakan mata
 - **Responsive Design**: Tampilan sempurna di desktop dan mobile
-- **Dark/Light Mode**: Otomatis menyesuaikan dengan preferensi sistem
 
 ### 🤖 **Kemampuan AI**
 - **Multi-Model Support**: Pilih dari 5 model Gemini (Flash 2.5, Flash 2.5 Lite, Pro 2.5, Pro 3.0, Flash 2.0 Exp)
