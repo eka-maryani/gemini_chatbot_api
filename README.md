@@ -49,7 +49,7 @@ Aplikasi chatbot berbasis Google Gemini AI dengan antarmuka yang elegan, feminin
 
 1. **Clone atau Download Project**
    ```bash
-   cd starter
+   cd gemini_chatbot_api
    ```
 
 2. **Install Dependencies**
